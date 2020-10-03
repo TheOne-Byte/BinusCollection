@@ -4,7 +4,6 @@
 from creds import USERNAME, PASSWORD
 from binusUtil import login, getCourseData
 import requests
-from bs4 import BeautifulSoup as bs
 import sys
 from datetime import datetime
 import os
