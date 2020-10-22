@@ -5,8 +5,15 @@ import requests
 from datetime import datetime
 from creds import USERNAME, PASSWORD
 
-outputFile = "/home/eternalbeats/Desktop/binus/sems5/class.txt"
 s = requests.session()
+
+#Change this
+outputFile = "/home/eternalbeats/Desktop/binus/sems5/class.txt"
+
+def menu():
+	print("This script is made for students at binus to check their classes schedule")
+	print("Check your class and with meeting id and password and the link\n")
+
 
 def login(username, password):
 	loginUrl = "https://myclass.apps.binus.ac.id/Auth/Login"
@@ -17,10 +24,10 @@ def login(username, password):
 	prompt = s.post(loginUrl, data=data)
 	
 	if prompt.json()['Status'] == True:
-		print("Login Success")
+		print("[*] Login Success")
 		return True
 	else:
-		print("Login Error")
+		print("[-] Login Error")
 		print(prompt.json()['Message'])
 		'''
 		"Invalid username or password!" : "Wrong password"
@@ -42,8 +49,9 @@ def scrap():
 			f.write(f"Meeting password 	: {data['MeetingPassword']}\n")
 			f.write(f"Meeting url 		: {data['MeetingUrl']}\n\n")
 		f.close()
-	print(f"data stored in {outputFile}")
+	print(f"[*] data stored in {outputFile}")
 
+menu()
 if login(USERNAME, PASSWORD):
-	print("Trying to scrap your class list")
+	print("[*] Trying to scrap your class list")
 	scrap()

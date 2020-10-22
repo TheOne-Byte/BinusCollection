@@ -9,12 +9,18 @@ from datetime import datetime
 import os
 
 mainUrl = "https://binusmaya.binus.ac.id/"
-outputFile = "/home/eternalbeats/Desktop/binus/sems5/assignment.txt"
-assignmentFilePath = "/home/eternalbeats/Desktop/binus/sems5/Assignment/"
 s = requests.Session()
 headers = {
 	'Referer': 'https://binusmaya.binus.ac.id/NewStudent/'
 }
+
+#Change this
+outputFile = "/home/eternalbeats/Desktop/binus/sems5/assignment.txt"
+assignmentFilePath = "/home/eternalbeats/Desktop/binus/sems5/Assignment/"
+
+def menu():
+	print("This script is made for students at binus to check their assignments")
+	print("Download the assignment file and the deadline without opening binusmaya\n")
 
 def downloadAssignment(downloadURI):
 	downloadUrl = "https://binusmaya.binus.ac.id/services/ci/index.php/general/downloadDocument/"
@@ -28,7 +34,7 @@ def downloadAssignment(downloadURI):
 	with open(assignmentFilePath+fileName, 'wb') as f:
 		f.write(prompt.content)
 		f.close()
-	print(f"{fileName} Downloaded")
+	print(f"[*] {fileName} Downloaded")
 
 def scrapAssignment(assginmentURI,className):
 	with open(outputFile, 'w') as f:
@@ -49,10 +55,12 @@ def scrapAssignment(assginmentURI,className):
 				f.write(f"Deadline	: {data['deadlineDuration']} {data['deadlineTime']}\n")
 				f.write(f"File 		: {fileName}\n\n")
 				f.close()
-			print(f"{data['Title']} added")
+			print(f"[*] {data['Title']} added")
 
+menu()
 s, sessId= login(s, USERNAME, PASSWORD)
 if sessId:
+	print("[*] Login Successful")
 	s, courses = getCourseData(s, sessId)
 	
 	assignmentURI = []
@@ -62,7 +70,7 @@ if sessId:
 		className.append(data['COURSE_TITLE_LONG'])
 
 	scrapAssignment(assignmentURI, className)
-	print("Done")
+	print("[*] Done")
 else:
-	print("Login Failed")
+	print("[-] Login Failed")
 	sys.exit(1)
