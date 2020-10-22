@@ -27,7 +27,7 @@ Your forum needs
 Some options:
 |option|usage|
 |---|---|
-|-h|to show this message|
+|-h|to show help message|
 |-r|Reply automaticly with the title and description to the forum you haven't replied|
 |-i|To print the output just the Thread ID without the forum link|
 
