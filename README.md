@@ -7,10 +7,29 @@ This is just some stuff I did to make my life easier (just tired of logging in t
 |Name|Functionality|
 |---|---|
 |creds.py|Your Binus credential|
-|AssignmentScrap.py|Take all the assignment in your current semester and download the file|
-|ClassScrap.py|Take all your class schedule from myclass|
+|assignmentScrap.py|Take all the assignment in your current semester and download the file|
+|classScrap.py|Take all your class schedule from myclass|
 |binusUtil.py|Login and GetCourseData|
 |autoForum.py|Auto reply unreplied forum|
+
+## binusUtil
+There is login and your courses in this current semester
+
+## classScrap
+Get your class schedule
+
+## assignmentScrap
+Get your assignment for easy access
+
+## autoForum
+Your forum needs
+
+Some options:
+|option|usage|
+|---|---|
+|-h|to show this message|
+|-r|Reply automaticly with the title and description to the forum you haven't replied|
+|-i|To print the output just the Thread ID without the forum link|
 
 ## What's next?
 
