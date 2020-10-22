@@ -13,12 +13,27 @@ headers = {
 	'Referer':'https://binusmaya.binus.ac.id/NewStudent/'
 }
 
+#Change this for your own message
 title = '''
 Auto generated message
 '''
 description = '''
 This message is made for attendace purpose
 '''
+
+#Options
+reply = False
+printId = False
+helpNeeded = False
+
+def help():
+	print("This script is made for students at binus to check their forums activity")
+	print("Because in some cases replying to a forum is needed for attendace\n")
+	print("By the way, here's the options :")
+	print("-r\t: Reply automaticly with the title and description to the forum you haven't replied")
+	print("-i\t: To print the output just the Thread ID without the forum link")
+	print("-h\t: to show this message")
+	sys.exit(1)
 
 def checkStatus(threadID):
 	hasReplied = False
@@ -37,7 +52,10 @@ def checkStatus(threadID):
 def autoReply(threadID):
 	status, PostID = checkStatus(threadID)
 	if not status:
-		print(f"replying to threadID : {threadID}")
+		if printId:
+			print(f"replying to threadID : {PostID}")
+		else:
+			print(f"[*] replying to : https://binusmaya.binus.ac.id/NewStudent/#/forum/reader.{threadID}")
 
 		data = {
 			"title":title,
@@ -50,11 +68,14 @@ def autoReply(threadID):
 		replyUrl = mainUrl + "services/ci/index.php/forum/saveReply"
 		prompt = s.post(replyUrl, json=data, headers=headers)
 		if prompt.json()['status'] == "success":
-			print("reply successful")
+			print("[*] reply successful")
 		else:
-			print(f"failed reply at threadID : {threadID}")
+			if printId:
+				print(f"[-] Failed reply at threadID : {threadID}")
+			else:
+				print(f"[-] Failed reply at : https://binusmaya.binus.ac.id/NewStudent/#/forum/reader.{threadID}")
 	else:
-		print("you have replied this forum")
+		# print("[*] You have replied this forum")
 		return
 
 
@@ -76,13 +97,35 @@ def getThread(courses, sessId):
 		for thread in threads:
 			if thread['ID'] == -1:
 				continue
-			autoReply(thread['ID'])
+			
+			if reply:
+				autoReply(thread['ID'])
+			else:
+				status, _ = checkStatus(thread['ID'])
+				if not status:
+					if printId:
+						print(f"[*] You haven't replied to this threadID : {thread['ID']}")
+					else:
+						print(f"[*] You haven't replied to this thread : https://binusmaya.binus.ac.id/NewStudent/#/forum/reader.{thread['ID']}")
+
+options = sys.argv[1:]
+for option in options:
+	if option == "-r":
+		reply = True
+	elif option == "-i":
+		printId = True
+	else:
+		helpNeeded = True
+
+if helpNeeded:
+	help()
 
 s, sessId= login(s, USERNAME, PASSWORD)
 if sessId:
+	print("[*] Login Successful")
 	s, courses = getCourseData(s, sessId)
 	getThread(courses, sessId)
-	print("Done")
+	print("[*] Done")
 else:
-	print("Login Failed")
+	print("[-] Login Failed")
 	sys.exit(1)
